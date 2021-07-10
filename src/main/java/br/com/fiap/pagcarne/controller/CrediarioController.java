@@ -1,38 +1,32 @@
 package br.com.fiap.pagcarne.controller;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.fiap.pagcarne.domain.Crediario;
+import br.com.fiap.pagcarne.service.CrediarioService;
 
 @RestController
 public class CrediarioController {
+	
+	@Autowired
+	private CrediarioService crediarioService;
 
-	private List<Crediario> crediarioList;
-	private final AtomicLong counter = new AtomicLong();
-	private final static String template = "Crediario %d"; 
-
-	public CrediarioController() {
-		crediarioList = new ArrayList<Crediario>();
-		for(int i = 0; i < 5; i++) {
-			crediarioList.add(new Crediario(counter.incrementAndGet(),
-					String.format(template, counter.get())));
-		}
-	}
+	public CrediarioController() {}
 
 	@GetMapping("/crediarios")
-	public List<Crediario> crediarioList() {
-		return crediarioList;
+	public List<Crediario> crediarioList(@RequestParam(value="clienteid") long id) {
+		List<Crediario> credList = crediarioService.getCrediariosByClienteId(id);
+		return credList;
 	}
 	
 	@GetMapping("/crediario")
 	public Crediario crediario(@RequestParam(value="id") long id) {
-		return crediarioList.get((int) id);
+		return crediarioService.getCrediarioById(id);
 	}
 
 }
