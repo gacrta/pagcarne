@@ -1,5 +1,6 @@
 package br.com.fiap.pagcarne.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,12 +31,13 @@ public class CrediarioService {
 	}
 	
 	@Transactional
-	public Crediario add(String descricao, double valor, double taxaJuros, long parcelas, long clienteId) {
+	public Crediario add(String descricao, double valor, double taxaJuros, long parcelas, LocalDate proximoVencimento, long clienteId) {
 		return crediarioRepository.save(new Crediario()
 				.setDescricao(descricao)
 				.setValorTotal(valor)
 				.setTaxaJuros(taxaJuros)
 				.setQtdeParcelas(parcelas)
+				.setProximoVencimento(proximoVencimento)
 				.setClienteId(clienteId));
 	}
 }
